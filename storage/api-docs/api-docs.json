@@ -1,0 +1,763 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "News API",
+        "description": "API для управління новинами з блоковою структурою контенту.",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Реєстрація нового користувача",
+                "operationId": "8e4e3cb7b46126f4696379d3c7eeb4ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Макс"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "max@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "avatar": {
+                                        "description": "Аватар (файл)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "bio": {
+                                        "type": "string",
+                                        "example": "Про мене"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Успішна реєстрація"
+                    },
+                    "422": {
+                        "description": "Помилка валідації"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизація користувача",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "max@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успішний вхід"
+                    },
+                    "401": {
+                        "description": "Невірні облікові дані"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Вихід з акаунта",
+                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
+                "responses": {
+                    "200": {
+                        "description": "Успішний вихід"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/new_blocks": {
+            "post": {
+                "tags": [
+                    "News Blocks"
+                ],
+                "summary": "Створити блок контенту для новини",
+                "operationId": "1f8da008a9daf20de31c96ad86afba5e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "news_id",
+                                    "content[type]"
+                                ],
+                                "properties": {
+                                    "news_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "content[type]": {
+                                        "type": "string",
+                                        "enum": [
+                                            "text",
+                                            "image",
+                                            "text_image_right",
+                                            "text_image_left"
+                                        ],
+                                        "example": "text"
+                                    },
+                                    "content[text]": {
+                                        "type": "string",
+                                        "example": "Текст блоку"
+                                    },
+                                    "content[image]": {
+                                        "description": "Картинка блоку",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "position": {
+                                        "type": "integer",
+                                        "example": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Блок створено"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    },
+                    "403": {
+                        "description": "Заборонено"
+                    },
+                    "422": {
+                        "description": "Помилка валідації"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/new_blocks/{id}": {
+            "post": {
+                "tags": [
+                    "News Blocks"
+                ],
+                "summary": "Оновити блок контенту (POST з _method=PUT для файлів)",
+                "operationId": "b37e5416a545dbee042ff1c12f368f42",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID блоку",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "_method": {
+                                        "description": "Спуфінг методу",
+                                        "type": "string",
+                                        "example": "PUT"
+                                    },
+                                    "content[type]": {
+                                        "type": "string",
+                                        "enum": [
+                                            "text",
+                                            "image",
+                                            "text_image_right",
+                                            "text_image_left"
+                                        ]
+                                    },
+                                    "content[text]": {
+                                        "type": "string"
+                                    },
+                                    "content[image]": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "position": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Блок оновлено"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    },
+                    "403": {
+                        "description": "Заборонено"
+                    },
+                    "422": {
+                        "description": "Помилка валідації"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "News Blocks"
+                ],
+                "summary": "Видалити блок контенту",
+                "operationId": "e99f074fe414890280840f22fcc8406e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID блоку",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Блок видалено"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    },
+                    "403": {
+                        "description": "Заборонено"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user_news": {
+            "get": {
+                "tags": [
+                    "User News"
+                ],
+                "summary": "Отримати список власних новин",
+                "operationId": "5e28ec22584c9eeeac673cff5c8370ca",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Пошук",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_published",
+                        "in": "query",
+                        "description": "Фільтр за статусом",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Кількість на сторінку",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер сторінки",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список новин користувача"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User News"
+                ],
+                "summary": "Створити новину",
+                "operationId": "b1f57450a61284aa43ee78e67bc9ace7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Назва новини"
+                                    },
+                                    "short_description": {
+                                        "type": "string",
+                                        "example": "Короткий опис"
+                                    },
+                                    "image": {
+                                        "description": "Картинка новини",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "is_published": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "published_at": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Новину створено"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    },
+                    "422": {
+                        "description": "Помилка валідації"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user_news/{id}": {
+            "get": {
+                "tags": [
+                    "User News"
+                ],
+                "summary": "Отримати конкретну новину користувача",
+                "operationId": "dd5bf5509734f79c531f2600f3c5edb0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID новини",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Дані новини"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    },
+                    "404": {
+                        "description": "Не знайдено"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User News"
+                ],
+                "summary": "Оновити новину (POST з _method=PUT для файлів)",
+                "operationId": "f41183eca4cd12327fee0ee93f4fe46e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID новини",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "_method": {
+                                        "description": "Спуфінг методу",
+                                        "type": "string",
+                                        "example": "PUT"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Оновлена назва"
+                                    },
+                                    "short_description": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "is_published": {
+                                        "type": "boolean"
+                                    },
+                                    "published_at": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Новину оновлено"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    },
+                    "422": {
+                        "description": "Помилка валідації"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "User News"
+                ],
+                "summary": "Видалити новину",
+                "operationId": "f67cca6e3439ba82f15dc418185a7870",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID новини",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Новину видалено"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    },
+                    "404": {
+                        "description": "Не знайдено"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Отримати профіль поточного користувача",
+                "operationId": "7d12955ead9260d82af59043cdf7f84d",
+                "responses": {
+                    "200": {
+                        "description": "Дані профілю"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Оновити профіль (POST з _method=PUT для файлів)",
+                "operationId": "4f10e8f1a9b5877a8fe852d886240504",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "_method": {
+                                        "description": "Спуфінг методу",
+                                        "type": "string",
+                                        "example": "PUT"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Новий Макс"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "bio": {
+                                        "type": "string"
+                                    },
+                                    "avatar": {
+                                        "description": "Аватар",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Профіль оновлено"
+                    },
+                    "401": {
+                        "description": "Неавторизований"
+                    },
+                    "422": {
+                        "description": "Помилка валідації"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/news": {
+            "get": {
+                "tags": [
+                    "Public News"
+                ],
+                "summary": "Отримати список опублікованих новин",
+                "operationId": "c33e145d81ca885577167b753733eca0",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Пошук по назві або опису",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Кількість на сторінку (макс 50)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер сторінки",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список новин"
+                    }
+                }
+            }
+        },
+        "/api/news/{slug}": {
+            "get": {
+                "tags": [
+                    "Public News"
+                ],
+                "summary": "Отримати новину за slug (з блоками контенту)",
+                "operationId": "79799729411d70e82529ca8210936edc",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug новини",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Дані новини з блоками"
+                    },
+                    "404": {
+                        "description": "Новину не знайдено"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Введіть токен, отриманий при логіні",
+                "bearerFormat": "sanctum",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "News Blocks",
+            "description": "News Blocks"
+        },
+        {
+            "name": "User News",
+            "description": "User News"
+        },
+        {
+            "name": "Profile",
+            "description": "Profile"
+        },
+        {
+            "name": "Public News",
+            "description": "Public News"
+        }
+    ]
+}

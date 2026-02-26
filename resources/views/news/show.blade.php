@@ -1,0 +1,84 @@
+<x-app>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+
+        <nav class="mb-6">
+            <ol class="flex items-center space-x-2 text-sm">
+                <li><a href="{{ route('news.index') }}" class="text-indigo-600 hover:underline">Новини</a></li>
+                <li class="text-gray-400">/</li>
+                <li class="text-gray-500">{{ Str::limit($news->title, 50) }}</li>
+            </ol>
+        </nav>
+
+        @if($news->image)
+            <img src="{{ Storage::url($news->image) }}" alt="{{ $news->title }}"
+                class="w-full rounded-lg object-cover max-h-96 mb-6" />
+        @endif
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $news->title }}</h1>
+
+        <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-200">
+            @if($news->user->avatar)
+                <img src="{{ Storage::url($news->user->avatar) }}" class="w-10 h-10 rounded-full object-cover">
+            @else
+                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-lg">👤</div>
+            @endif
+            <div>
+                <p class="text-sm font-medium text-gray-900">{{ $news->user->name }}</p>
+                <p class="text-sm text-gray-500">{{ $news->published_at?->format('d M Y, H:i') }}</p>
+            </div>
+        </div>
+
+        @if($news->short_description)
+            <p class="text-lg text-gray-600 mb-8">{{ $news->short_description }}</p>
+        @endif
+
+        <div class="space-y-8">
+            @forelse($news->blocks->sortBy('position') as $block)
+                @php $type = $block->content['type'] ?? 'text'; @endphp
+
+                @if($type === 'text')
+                    <div class="prose max-w-none">
+                        <p class="text-base text-gray-900">{{ $block->content['text'] ?? '' }}</p>
+                    </div>
+
+                @elseif($type === 'image')
+                    @if(isset($block->content['image']))
+                        <img src="{{ Storage::url($block->content['image']) }}"
+                            class="w-full rounded-lg object-cover" />
+                    @endif
+
+                @elseif($type === 'text_image_right')
+                    <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+                        <div class="lg:col-span-2">
+                            <p class="text-base text-gray-900">{{ $block->content['text'] ?? '' }}</p>
+                        </div>
+                        @if(isset($block->content['image']))
+                            <img src="{{ Storage::url($block->content['image']) }}"
+                                class="mt-4 lg:mt-0 w-full rounded-lg object-cover" />
+                        @endif
+                    </div>
+
+                @elseif($type === 'text_image_left')
+                    <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+                        @if(isset($block->content['image']))
+                            <img src="{{ Storage::url($block->content['image']) }}"
+                                class="mb-4 lg:mb-0 w-full rounded-lg object-cover" />
+                        @endif
+                        <div class="lg:col-span-2">
+                            <p class="text-base text-gray-900">{{ $block->content['text'] ?? '' }}</p>
+                        </div>
+                    </div>
+                @endif
+            @empty
+                <p class="text-gray-500">Контент відсутній</p>
+            @endforelse
+        </div>
+
+        <div class="mt-10">
+            <a href="{{ route('news.index') }}"
+                class="rounded-md bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
+                ← Назад до новин
+            </a>
+        </div>
+    </div>
+</x-app>
