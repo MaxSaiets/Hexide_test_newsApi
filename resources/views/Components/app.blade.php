@@ -40,9 +40,15 @@
             </div>
             <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
-                    <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
-                    <x-nav-link href="{{ route('news.index') }}" :active="request()->is('news')">News</x-nav-link>
-                    <x-nav-link href="/api/documentation" :active="request()->is('api/documentation')">Swagger</x-nav-link>
+                    <x-nav-link href="/" :active="request()->is('/')">{{ __('messages.nav.home') }}</x-nav-link>
+                    <x-nav-link href="{{ route('news.index') }}" :active="request()->is('news')">{{ __('messages.nav.news') }}</x-nav-link>
+                    <x-nav-link href="/api/documentation" :active="request()->is('api/documentation')">{{ __('messages.nav.swagger') }}</x-nav-link>
+
+                    <div class="ml-4 flex items-center space-x-2 border-l border-gray-600 pl-4">
+                        <a href="{{ url('lang/uk') }}" class="{{ app()->getLocale() === 'uk' ? 'text-white font-bold' : 'text-gray-400 hover:text-white' }}">UK</a>
+                        <span class="text-gray-600">|</span>
+                        <a href="{{ url('lang/en') }}" class="{{ app()->getLocale() === 'en' ? 'text-white font-bold' : 'text-gray-400 hover:text-white' }}">EN</a>
+                    </div>
                 </div>
             </div>
             </div>

@@ -3,7 +3,7 @@
 
         <nav class="mb-6">
             <ol class="flex items-center space-x-2 text-sm">
-                <li><a href="{{ route('news.index') }}" class="text-indigo-600 hover:underline">Новини</a></li>
+                <li><a href="{{ route('news.index') }}" class="text-indigo-600 hover:underline">{{ __('messages.news.news_link') }}</a></li>
                 <li class="text-gray-400">/</li>
                 <li class="text-gray-500">{{ Str::limit($news->title, 50) }}</li>
             </ol>
@@ -70,14 +70,14 @@
                     </div>
                 @endif
             @empty
-                <p class="text-gray-500">Контент відсутній</p>
+                <p class="text-gray-500">{{ __('messages.news.no_content') }}</p>
             @endforelse
         </div>
 
         <div class="mt-10">
             <a href="{{ route('news.index') }}"
                 class="rounded-md bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700">
-                ← Назад до новин
+                {{ __('messages.news.back_to_news') }}
             </a>
         </div>
     </div>
