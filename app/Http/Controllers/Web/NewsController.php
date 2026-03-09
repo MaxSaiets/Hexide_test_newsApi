@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use App\Models\News;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class WebNewsController extends Controller
+class NewsController extends Controller
 {
     public function index(Request $request)
     {

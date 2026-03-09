@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\PublicNewsController;
+use App\Http\Controllers\Api\Public\NewsController as PublicNewsController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\NewsBlockController;
 

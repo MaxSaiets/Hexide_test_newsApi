@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Public;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use App\Models\News;
 use App\Http\Resources\NewsResource;
 use OpenApi\Attributes as OA;
 
-class PublicNewsController extends Controller
+class NewsController extends Controller
 {
     #[OA\Get(
         path: '/api/news',
