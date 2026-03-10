@@ -661,7 +661,7 @@
                     "Public News"
                 ],
                 "summary": "Отримати список опублікованих новин",
-                "operationId": "c33e145d81ca885577167b753733eca0",
+                "operationId": "7bfa30fa5f9f603dc64e8f019646b4d6",
                 "parameters": [
                     {
                         "name": "search",
@@ -705,7 +705,7 @@
                     "Public News"
                 ],
                 "summary": "Отримати новину за slug (з блоками контенту)",
-                "operationId": "79799729411d70e82529ca8210936edc",
+                "operationId": "067734c2bcda43e97c3d360bc9e3cead",
                 "parameters": [
                     {
                         "name": "slug",

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use OpenApi\Attributes as OA;
+use App\Http\Resources\UserResource;
 
 class ProfileController extends Controller
 {
@@ -22,7 +23,7 @@ class ProfileController extends Controller
     )]
     public function show_profile(Request $request)
     {
-        return response()->json($request->user());
+        return new UserResource($request->user());
     }
 
     #[OA\Post(
@@ -79,6 +80,6 @@ class ProfileController extends Controller
 
         $user->update($data);
 
-        return response()->json($user);
+        return new UserResource($user);
     }
 }
