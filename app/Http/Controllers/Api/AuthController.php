@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 use App\Http\Resources\UserResource;
-
+use App\Http\Requests\RegisterRequest;
 class AuthController extends Controller
 {
     #[OA\Post(
@@ -38,16 +38,10 @@ class AuthController extends Controller
             new OA\Response(response: 422, description: 'Помилка валідації'),
         ]
     )]
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bio' => 'nullable|string',
-        ]);
-
+        $data = $request->validated();
+    
         $data['password'] = Hash::make($data['password']);
 
         if ($request->hasFile('avatar')) {
