@@ -41,11 +41,11 @@ class NewsBlockController extends Controller
             new OA\Response(response: 422, description: 'Помилка валідації'),
         ]
     )]
-    public function store(StoreNewsBlockRequest $request)
+    public function store(StoreNewsBlockRequest $request, $userNewsId)
     {
         $request->validated();
 
-        $news = $request->user()->news()->findOrFail($request->news_id);
+        $news = $request->user()->news()->findOrFail($userNewsId);
 
         $content = $request->input('content');
 

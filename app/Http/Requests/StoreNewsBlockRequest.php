@@ -22,7 +22,6 @@ class StoreNewsBlockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'news_id' => 'required|exists:news,id',
             'content.type' => 'required|in:text,image,text_image_right,text_image_left',
             'content.text' => 'required_unless:content.type,image|string',
             'content.image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
