@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use OpenApi\Attributes as OA;
 use App\Http\Resources\UserResource;
+use App\Http\Requests\UpdateProfileRequest;
 
 class ProfileController extends Controller
 {
@@ -53,33 +54,41 @@ class ProfileController extends Controller
             new OA\Response(response: 422, description: 'Помилка валідації'),
         ]
     )]
-    public function update_profile(Request $request)
+    public function update_profile(UpdateProfileRequest $request)
     {
         $user = $request->user();
 
-        $data = $request->validate([
-            'name' => 'nullable|string|max:255',
-            'bio' => 'nullable|string',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'email' => 'nullable|string|email|max:255|unique:users,email,' . $request->user()->id,
-            'password' => 'nullable|string|min:8|confirmed',
+        $data = $request->validated();
+
+        $userFields = array_filter([
+            'name' => $data['name'] ?? null,
+            'email' => $data['email'] ?? null,
         ]);
 
+        if(!empty($data['password'])) {
+            $userFields['password'] = Hash::make($data['password']);
+        }
+        if(!empty($userFields)) {
+            $user->update($userFields);
+        }
+
+        $profileData = [];
+        
+        if(isset($data['bio'])) {
+            $profileData['bio'] = $data['bio'];
+        }
+    
         if ($request->hasFile('avatar')) {
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
+            if ($user->profile?->avatar) {
+                Storage::disk('public')->delete($user->profile->avatar);
             }
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $profileData['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        } else {
-            unset($data['password']);
+        if (!empty($profileData)) {
+            $user->profile()->updateOrCreate(['user_id'=> $user->id], $profileData);
         }
 
-        $user->update($data);
-
-        return new UserResource($user);
+        return new UserResource($user->fresh()->load('profile'));
     }
 }

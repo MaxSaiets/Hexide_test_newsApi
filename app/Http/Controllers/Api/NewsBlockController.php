@@ -43,21 +43,15 @@ class NewsBlockController extends Controller
     )]
     public function store(StoreNewsBlockRequest $request, $userNewsId)
     {
-        $request->validated();
-
         $news = $request->user()->news()->findOrFail($userNewsId);
-
-        $content = $request->input('content');
-
-        if ($request->hasFile('content.image')) {
-            $path = $request->file('content.image')->store('news_blocks', 'public');
-            $content['image'] = $path;
+        
+        $data = $request->validated();
+     
+        if ($request->hasFile('image_path')) {
+            $data['image_path'] = $request->file('image_path')->store('news_blocks', 'public');
         }
 
-        $news_block = $news->blocks()->create([
-            'content' => $content,
-            'position' => $request->position ?? 0,
-        ]);
+        $news_block = $news->blocks()->create($data);
 
         return response()->json($news_block, 201);
     }
@@ -99,17 +93,16 @@ class NewsBlockController extends Controller
 
         $data = $request->validated();
 
-        if ($request->hasFile('content.image')) {
-            if ($news_block->content['image']) {
-                Storage::disk('public')->delete($news_block->content['image']);
+        if ($request->hasFile('image_path')) {
+            if ($news_block->image_path) {
+                Storage::disk('public')->delete($news_block->image_path);
             }
-            $path = $request->file('content.image')->store('news_blocks', 'public');
-            $data['content']['image'] = $path;
+            $data['image_path'] = $request->file('image_path')->store('news_blocks', 'public');
         }
 
         $news_block->update($data);
 
-        return response()->json($news_block, 201);
+        return response()->json($news_block, 200);
     }
 
     #[OA\Delete(
@@ -131,8 +124,8 @@ class NewsBlockController extends Controller
         $news_block = NewsBlock::findOrFail($id);
         Gate::authorize('delete', $news_block->news);
 
-        if (isset($news_block->content['image'])) {
-            Storage::disk('public')->delete($news_block->content['image']);
+        if ($news_block->image_path) {
+            Storage::disk('public')->delete($news_block->image_path);
         }
 
         $news_block->delete();

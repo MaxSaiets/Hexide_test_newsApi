@@ -44,10 +44,6 @@ class AuthController extends Controller
     
         $data['password'] = Hash::make($data['password']);
 
-        if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
-        }
-
         $user = User::create($data);
 
         $token = $user->createToken('auth_token')->plainTextToken;
