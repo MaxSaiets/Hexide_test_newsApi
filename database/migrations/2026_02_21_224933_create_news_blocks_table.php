@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('news_blocks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('news_id')->constrained()->cascadeOnDelete();
-            $table->json('content');
+            $table->string('type');
+            $table->text('text_content')->nullable();
+            $table->string('image_path')->nullable();
             $table->integer('position')->default(0);
             $table->index(['news_id', 'position']);
             $table->timestamps();
