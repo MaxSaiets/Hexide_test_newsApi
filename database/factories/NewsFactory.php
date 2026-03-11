@@ -23,7 +23,7 @@ class NewsFactory extends Factory
             'title' => $title,
             'slug' => Str::slug($title) . '-' . $this->faker->numberBetween(1, 100),
             'short_description' => $this->faker->text(260),
-            'image' => fake()->boolean(20) ? null : 'https://picsum.photos/seed/' . fake()->word() . '/800/600',
+            'image' => 'https://picsum.photos/seed/' . fake()->word() . '/800/600',
             'is_published' => $this->faker->boolean(70),
             'published_at' => $this->faker->dateTime(),
             'user_id' => User::factory(),
