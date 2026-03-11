@@ -21,19 +21,11 @@ class NewsBlockFactory extends Factory
 
         $selectedType = $this->faker->randomElement($types);
 
-        $content = ['type' => $selectedType];
-
-        if(in_array($selectedType, ['text', 'text_image_left', 'text_image_right'])){
-            $content['text'] = $this->faker->paragraphs(mt_rand(1,5), true);
-        }
-
-        if(in_array($selectedType, ['image', 'text_image_left', 'text_image_right'])){
-            $content['image'] = 'news_blocks_images/placeholder.jpg';
-        }
-
         return [
             'news_id' => News::factory(),
-            'content' => $content,
+            'type' => $selectedType,
+            'text_content' => in_array($selectedType, ['text', 'text_image_left', 'text_image_right']) ? $this->faker->paragraphs(mt_rand(1,5), true) : null,
+            'image_path' => in_array($selectedType, ['image', 'text_image_left', 'text_image_right']) ? 'news_blocks_images/placeholder.jpg' : null,
             'position' => $this->faker->numberBetween(1, 10),
         ];
     }
