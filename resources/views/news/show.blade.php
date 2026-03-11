@@ -10,7 +10,7 @@
         </nav>
 
         @if($news->image)
-            <img src="{{ Storage::url($news->image) }}" alt="{{ $news->title }}"
+            <img src="{{ $news->image }}" alt="{{ $news->title }}"
                 class="w-full rounded-lg object-cover max-h-96 mb-6" />
         @endif
 
@@ -18,7 +18,7 @@
 
         <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-200">
             @if($news->user->avatar)
-                <img src="{{ Storage::url($news->user->avatar) }}" class="w-10 h-10 rounded-full object-cover">
+                <img src="{{ $news->user->avatar }}" class="w-10 h-10 rounded-full object-cover">
             @else
                 <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-lg">👤</div>
             @endif
@@ -34,38 +34,37 @@
 
         <div class="space-y-8">
             @forelse($news->blocks->sortBy('position') as $block)
-                @php $type = $block->content['type'] ?? 'text'; @endphp
-
+                @php $type = $block->type; @endphp
                 @if($type === 'text')
                     <div class="prose max-w-none">
-                        <p class="text-base text-gray-900">{{ $block->content['text'] ?? '' }}</p>
+                        <p class="text-base text-gray-900">{{ $block->text_content ?? '' }}</p>
                     </div>
 
                 @elseif($type === 'image')
-                    @if(isset($block->content['image']))
-                        <img src="{{ Storage::url($block->content['image']) }}"
+                    @if(isset($block->image_path))
+                        <img src="{{ $block->image_path }}"
                             class="w-full rounded-lg object-cover" />
                     @endif
 
                 @elseif($type === 'text_image_right')
                     <div class="lg:grid lg:grid-cols-3 lg:gap-8">
                         <div class="lg:col-span-2">
-                            <p class="text-base text-gray-900">{{ $block->content['text'] ?? '' }}</p>
+                            <p class="text-base text-gray-900">{{ $block->text_content ?? '' }}</p>
                         </div>
-                        @if(isset($block->content['image']))
-                            <img src="{{ Storage::url($block->content['image']) }}"
+                        @if(isset($block->image_path))
+                            <img src="{{ $block->image_path }}"
                                 class="mt-4 lg:mt-0 w-full rounded-lg object-cover" />
                         @endif
                     </div>
 
                 @elseif($type === 'text_image_left')
                     <div class="lg:grid lg:grid-cols-3 lg:gap-8">
-                        @if(isset($block->content['image']))
-                            <img src="{{ Storage::url($block->content['image']) }}"
+                        @if(isset($block->image_path))
+                            <img src="{{ $block->image_path }}"
                                 class="mb-4 lg:mb-0 w-full rounded-lg object-cover" />
                         @endif
                         <div class="lg:col-span-2">
-                            <p class="text-base text-gray-900">{{ $block->content['text'] ?? '' }}</p>
+                            <p class="text-base text-gray-900">{{ $block->text_content ?? '' }}</p>
                         </div>
                     </div>
                 @endif
