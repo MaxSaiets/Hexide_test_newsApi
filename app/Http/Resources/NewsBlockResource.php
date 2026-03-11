@@ -15,15 +15,11 @@ class NewsBlockResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
-        $content = $this->content;
-
-        if(isset($content['image'])){
-            $content['image'] = Storage::url($content['image']);
-        }
         return [
             'id' => $this->id,
-            'content' => $content,
+            'type' => $this->type,
+            'text_content' => $this->text_content,
+            'image_path' => $this->image_path ? Storage::url($this->image_path) : null,
             'position' => $this->position,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
