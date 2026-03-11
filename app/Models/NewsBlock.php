@@ -11,7 +11,9 @@ class NewsBlock extends Model
     protected $table = 'news_blocks';
     protected $fillable = [
         'news_id',
-        'content',
+        'type',
+        'text_content',
+        'image_path',
         'position',
     ];
 
@@ -23,7 +25,6 @@ class NewsBlock extends Model
     protected function casts(): array
     {
         return [
-            'content' => 'array',
             'position' => 'integer',
         ];
     }

@@ -22,8 +22,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'avatar',
-        'bio',
     ];
 
     /**
@@ -38,6 +36,11 @@ class User extends Authenticatable
     public function news()
     {
         return $this->hasMany(News::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
     }
 
     /**
