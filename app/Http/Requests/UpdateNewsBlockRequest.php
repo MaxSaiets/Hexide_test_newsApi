@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Enums\NewsBlockType;
 
 class UpdateNewsBlockRequest extends FormRequest
 {
@@ -22,9 +24,13 @@ class UpdateNewsBlockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|in:text,image,text_image_right,text_image_left',
+            'type' => ['required', Rule::in(NewsBlockType::values())],
             'text_content' => 'required_unless:type,image|string|nullable',
-            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_path' => [Rule::requiredIf(fn () => in_array($this->input('type'), [
+                NewsBlockType::Image->value,
+                NewsBlockType::TextImageLeft->value,
+                NewsBlockType::TextImageRight->value,
+            ])),'nullable','image','mimes:jpeg,png,jpg,gif','max:2048'],
             'position' => 'integer',
         ];
     }

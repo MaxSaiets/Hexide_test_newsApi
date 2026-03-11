@@ -1,3 +1,7 @@
+@php
+    use App\Enums\NewsBlockType;
+@endphp
+
 <x-app>
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
 
@@ -34,19 +38,18 @@
 
         <div class="space-y-8">
             @forelse($news->blocks->sortBy('position') as $block)
-                @php $type = $block->type; @endphp
-                @if($type === 'text')
+                @if($block->type === NewsBlockType::Text)
                     <div class="prose max-w-none">
                         <p class="text-base text-gray-900">{{ $block->text_content ?? '' }}</p>
                     </div>
 
-                @elseif($type === 'image')
+                @elseif($block->type === NewsBlockType::Image)
                     @if(isset($block->image_path))
                         <img src="{{ $block->image_path }}"
                             class="w-full rounded-lg object-cover" />
                     @endif
 
-                @elseif($type === 'text_image_right')
+                @elseif($block->type === NewsBlockType::TextImageRight)
                     <div class="lg:grid lg:grid-cols-3 lg:gap-8">
                         <div class="lg:col-span-2">
                             <p class="text-base text-gray-900">{{ $block->text_content ?? '' }}</p>
@@ -57,7 +60,7 @@
                         @endif
                     </div>
 
-                @elseif($type === 'text_image_left')
+                @elseif($block->type === NewsBlockType::TextImageLeft)
                     <div class="lg:grid lg:grid-cols-3 lg:gap-8">
                         @if(isset($block->image_path))
                             <img src="{{ $block->image_path }}"

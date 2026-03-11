@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\NewsBlockType;
 
 class NewsBlock extends Model
 {
@@ -26,6 +27,7 @@ class NewsBlock extends Model
     {
         return [
             'position' => 'integer',
+            'type' => NewsBlockType::class,
         ];
     }
 }
