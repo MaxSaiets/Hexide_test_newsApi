@@ -22,9 +22,9 @@ class UpdateNewsBlockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content.type' => 'required|in:text,image,text_image_right,text_image_left',
-            'content.text' => 'required_unless:content.type,image|string',
-            'content.image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'type' => 'required|in:text,image,text_image_right,text_image_left',
+            'text_content' => 'required_unless:type,image|string|nullable',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'position' => 'integer',
         ];
     }

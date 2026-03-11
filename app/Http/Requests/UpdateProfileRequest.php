@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreNewsBlockRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,11 @@ class StoreNewsBlockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|in:text,image,text_image_right,text_image_left',
-            'text_content' => 'required_unless:type,image|string|nullable',
-            'image_path' => 'required_if:type,image, text_image_left, text_image_right|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'position' => 'integer',
+            'password' => 'nullable|string|min:8|confirmed',
+            'email' => 'nullable|string|email|max:255|unique:users,email,' . $this->user()->id,
+            'name' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }
