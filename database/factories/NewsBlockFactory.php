@@ -25,7 +25,7 @@ class NewsBlockFactory extends Factory
             'news_id' => News::factory(),
             'type' => $selectedType,
             'text_content' => in_array($selectedType, ['text', 'text_image_left', 'text_image_right']) ? $this->faker->paragraphs(mt_rand(1,5), true) : null,
-            'image_path' => in_array($selectedType, ['image', 'text_image_left', 'text_image_right']) ? 'news_blocks_images/placeholder.jpg' : null,
+            'image_path' => in_array($selectedType, ['image', 'text_image_left', 'text_image_right']) ? 'https://picsum.photos/seed/' . fake()->word() . '/800/600' : null,
             'position' => $this->faker->numberBetween(1, 10),
         ];
     }

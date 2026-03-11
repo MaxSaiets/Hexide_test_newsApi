@@ -20,7 +20,7 @@ class NewsResource extends JsonResource
             'slug'=> $this->slug,
             'title' => $this->title,
             'short_description' => $this->short_description,
-            'image' => $this->image ? Storage::url($this->image) : null,
+            'image' => $this->image ? (str_contains($this->image, 'http') ? $this->image : Storage::url($this->image)) : null,
             'is_published' => $this->is_published,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),

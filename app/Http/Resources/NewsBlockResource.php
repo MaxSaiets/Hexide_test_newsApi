@@ -19,7 +19,7 @@ class NewsBlockResource extends JsonResource
             'id' => $this->id,
             'type' => $this->type,
             'text_content' => $this->text_content,
-            'image_path' => $this->image_path ? Storage::url($this->image_path) : null,
+            'image_path' => $this->image_path ? (str_contains($this->image_path, 'http') ? $this->image_path : Storage::url($this->image_path)) : null,
             'position' => $this->position,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),

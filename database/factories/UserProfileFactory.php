@@ -19,7 +19,7 @@ class UserProfileFactory extends Factory
         return [
             'user_id' => User::factory(),
             'bio' => $this->faker->paragraphs(mt_rand(1, 5), true),
-            'avatar' => 'null',
+            'avatar' => null,
         ];
     }
 }
