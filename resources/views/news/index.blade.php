@@ -27,7 +27,7 @@
                 @foreach($news as $item)
                     <div class="group relative">
                         @if($item->image)
-                            <img src="{{ $item->image }}" alt="{{ $item->title }}"
+                            <img src="{{ $item->image_url }}" alt="{{ $item->title }}"
                                 class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
                         @else
                             <div class="aspect-square w-full rounded-md bg-gray-200 flex items-center justify-center text-gray-400 text-4xl lg:aspect-auto lg:h-80">

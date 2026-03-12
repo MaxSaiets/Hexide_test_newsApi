@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Enums\NewsBlockType;
 
@@ -18,6 +20,17 @@ class NewsBlock extends Model
         'position',
     ];
 
+
+    protected function imagePathUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->image_path
+                ? (str_starts_with($this->image_path, 'http')
+                    ? $this->image_path
+                    : Storage::url($this->image_path))
+                : null,
+        );
+    }
 
     public function news(){
         return $this->belongsTo(News::class);

@@ -1,6 +1,6 @@
 @props(['block'])
 
-@php $url = str_contains($block->image_path, 'http') ? $block->image_path : Storage::url($block->image_path); @endphp
+@php $url = $block->image_path_url; @endphp
 
 @if($block->type->value === 'image')
     <img src="{{ $url }}" class="w-full rounded-lg object-cover" />

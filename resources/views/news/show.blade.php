@@ -14,7 +14,7 @@
         </nav>
 
         @if($news->image)
-            <img src="{{ $news->image }}" alt="{{ $news->title }}"
+            <img src="{{ $news->image_url }}" alt="{{ $news->title }}"
                 class="w-full rounded-lg object-cover max-h-96 mb-6" />
         @endif
 
@@ -45,7 +45,7 @@
 
                 @elseif($block->type === NewsBlockType::Image)
                     @if(isset($block->image_path))
-                        <img src="{{ $block->image_path }}"
+                        <img src="{{ $block->image_path_url }}"
                             class="w-full rounded-lg object-cover" />
                     @endif
 
@@ -55,7 +55,7 @@
                             <p class="text-base text-gray-900">{{ $block->text_content ?? '' }}</p>
                         </div>
                         @if(isset($block->image_path))
-                            <img src="{{ $block->image_path }}"
+                            <img src="{{ $block->image_path_url }}"
                                 class="mt-4 lg:mt-0 w-full rounded-lg object-cover" />
                         @endif
                     </div>
@@ -63,7 +63,7 @@
                 @elseif($block->type === NewsBlockType::TextImageLeft)
                     <div class="lg:grid lg:grid-cols-3 lg:gap-8">
                         @if(isset($block->image_path))
-                            <img src="{{ $block->image_path }}"
+                            <img src="{{ $block->image_path_url }}"
                                 class="mb-4 lg:mb-0 w-full rounded-lg object-cover" />
                         @endif
                         <div class="lg:col-span-2">
