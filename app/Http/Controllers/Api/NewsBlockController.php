@@ -10,6 +10,7 @@ use App\Http\Requests\StoreNewsBlockRequest;
 use App\Http\Requests\UpdateNewsBlockRequest;
 use Illuminate\Support\Facades\Gate;
 use OpenApi\Attributes as OA;
+use App\Http\Resources\NewsBlockResource;
 
 class NewsBlockController extends Controller
 {
@@ -53,7 +54,7 @@ class NewsBlockController extends Controller
 
         $news_block = $news->blocks()->create($data);
 
-        return response()->json($news_block, 201);
+        return (new NewsBlockResource($news_block))->response()->setStatusCode(201);
     }
 
     #[OA\Post(
@@ -102,7 +103,7 @@ class NewsBlockController extends Controller
 
         $news_block->update($data);
 
-        return response()->json($news_block, 200);
+        return new NewsBlockResource($news_block->fresh());
     }
 
     #[OA\Delete(
