@@ -24,7 +24,9 @@ class ProfileController extends Controller
     )]
     public function show(Request $request)
     {
-        return new UserResource($request->user()->load('profile'));
+        /** @var \App\Models\User $user */
+        $user = $request->user();
+        return new UserResource($user->load('profile'));
     }
 
     #[OA\Post(
@@ -56,6 +58,7 @@ class ProfileController extends Controller
     )]
     public function update(UpdateProfileRequest $request)
     {
+        /** @var \App\Models\User $user */
         $user = $request->user();
 
         $data = $request->validated();

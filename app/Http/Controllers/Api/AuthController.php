@@ -80,8 +80,8 @@ class AuthController extends Controller
             content: new OA\JsonContent(
                 required: ['email', 'password'],
                 properties: [
-                    new OA\Property(property: 'email', type: 'string', format: 'email', example: 'max@example.com'),
-                    new OA\Property(property: 'password', type: 'string', format: 'password', example: 'password123'),
+                    new OA\Property(property: 'email', type: 'string', format: 'email', example: 'test@example.com'),
+                    new OA\Property(property: 'password', type: 'string', format: 'password', example: 'password'),
                 ]
             )
         ),
@@ -100,7 +100,9 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $user = Auth::user()->load('profile');
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $user->load('profile');
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
