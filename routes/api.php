@@ -13,12 +13,12 @@ Route::prefix('v1')->group(function (){
     Route::post('login', [AuthController::class , 'login'])->middleware('throttle:10,1');
     Route::post('logout', [AuthController::class , 'logout'])->middleware('auth:sanctum');
     
-    Route::get('profile', [ProfileController::class , 'show_profile'])->middleware('auth:sanctum');
-    
-    Route::put('profile', [ProfileController::class , 'update_profile'])->middleware('auth:sanctum');
-    
+    Route::get('profile', [ProfileController::class , 'show'])->middleware('auth:sanctum');
+
+    Route::put('profile', [ProfileController::class , 'update'])->middleware('auth:sanctum');
+
     Route::get('news', [PublicNewsController::class , 'index']);
-    Route::get('news/{slug}', [PublicNewsController::class , 'get_new_by_slug']);
+    Route::get('news/{slug}', [PublicNewsController::class , 'show']);
     
     Route::apiResource('user_news', NewsController::class)->middleware('auth:sanctum');
     Route::apiResource('user_news.blocks', NewsBlockController::class)->shallow()->middleware('auth:sanctum');

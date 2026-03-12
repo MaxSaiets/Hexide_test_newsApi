@@ -22,9 +22,9 @@ class ProfileController extends Controller
             new OA\Response(response: 401, description: 'Неавторизований'),
         ]
     )]
-    public function show_profile(Request $request)
+    public function show(Request $request)
     {
-        return new UserResource($request->user());
+        return new UserResource($request->user()->load('profile'));
     }
 
     #[OA\Post(
@@ -54,7 +54,7 @@ class ProfileController extends Controller
             new OA\Response(response: 422, description: 'Помилка валідації'),
         ]
     )]
-    public function update_profile(UpdateProfileRequest $request)
+    public function update(UpdateProfileRequest $request)
     {
         $user = $request->user();
 
