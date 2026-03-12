@@ -23,19 +23,23 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
 
-        $users = User::factory(5)->create();
-        $users->push($testUser);
 
-        foreach ($users as $user) {
-            News::factory(5)->create(['user_id' => $user->id])->each(function ($news) {
-                $blocksCount = mt_rand(2, 5);
-                for ($i = 0; $i < $blocksCount; $i++) {
-                    NewsBlock::factory()->create([
-                        'news_id' => $news->id,
-                        'position' => $i,
-                    ]);
-                }
-            });
+        $otherUsers = User::factory(5)->create();
+        $allUsers = $otherUsers->concat([$testUser]);
+
+        foreach ($allUsers as $user) {
+
+            $newsCount = ($user->id === $testUser->id) ? 10 : 5;
+            
+            News::factory($newsCount)
+                ->for($user)
+                ->create()
+                ->each(function (News $news) {
+                    NewsBlock::factory(rand(2, 6))
+                        ->sequence(fn($sequence) => ['position' => $sequence->index])
+                        ->for($news)
+                        ->create();
+                });
         }
 
     }
