@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
+
 class AuthController extends Controller
 {
     #[OA\Post(
@@ -74,12 +76,9 @@ class AuthController extends Controller
             new OA\Response(response: 401, description: 'Невірні облікові дані'),
         ]
     )]
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $data = $request->validate([
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:8',
-        ]);
+        $data = $request->validated();
 
         if (!Auth::attempt($data)) {
             return response()->json([
@@ -89,7 +88,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $request->user()->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'user' => new UserResource($user),
