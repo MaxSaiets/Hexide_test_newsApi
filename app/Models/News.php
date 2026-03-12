@@ -68,11 +68,7 @@ class News extends Model
     protected function imageUrl(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->image
-                ? (str_starts_with($this->image, 'http')
-                    ? $this->image
-                    : Storage::url($this->image))
-                : null,
+            get: fn() => $this->image ? Storage::url($this->image) : null,
         );
     }
 

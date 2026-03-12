@@ -24,11 +24,7 @@ class NewsBlock extends Model
     protected function imagePathUrl(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->image_path
-                ? (str_starts_with($this->image_path, 'http')
-                    ? $this->image_path
-                    : Storage::url($this->image_path))
-                : null,
+            get: fn() => $this->image_path ? Storage::url($this->image_path) : null,
         );
     }
 

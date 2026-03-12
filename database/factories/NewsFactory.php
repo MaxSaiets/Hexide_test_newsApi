@@ -19,11 +19,12 @@ class NewsFactory extends Factory
     public function definition(): array
     {
         $title = $this->faker->sentence(5);
+
         return [
             'title' => $title,
             'slug' => Str::slug($title) . '-' . $this->faker->numberBetween(1, 100),
             'short_description' => $this->faker->text(260),
-            'image' => 'https://picsum.photos/seed/' . fake()->word() . '/800/600',
+            'image' => 'news_images/placeholder.jpg',
             'is_published' => $this->faker->boolean(70),
             'published_at' => $this->faker->dateTime(),
             'user_id' => User::factory(),
