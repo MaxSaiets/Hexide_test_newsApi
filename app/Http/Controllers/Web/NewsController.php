@@ -11,7 +11,7 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
-        $news = News::with('user:id,name,avatar')
+        $news = News::with(['user:id,name', 'user.profile:user_id,avatar'])
             ->where('is_published', true)
             ->search($search)
             ->latest()
@@ -23,7 +23,7 @@ class NewsController extends Controller
 
     public function show($slug)
     {
-        $news = News::with(['blocks', 'user'])
+        $news = News::with(['blocks', 'user', 'user.profile:user_id,avatar'])
             ->where('slug', $slug)
             ->where('is_published', true)
             ->firstOrFail();

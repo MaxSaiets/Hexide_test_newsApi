@@ -43,17 +43,31 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
-    
-        $data['password'] = Hash::make($data['password']);
 
-        $user = User::create($data);
+        $user = User::create([
+            'name'     => $data['name'],
+            'email'    => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
 
+        $profileData = [];
+        if (!empty($data['bio'])) {
+            $profileData['bio'] = $data['bio'];
+        }
+        if ($request->hasFile('avatar')) {
+            $profileData['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
+        if (!empty($profileData)) {
+            $user->profile()->create($profileData);
+        }
+
+        $user->load('profile');
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => new UserResource($user),
+            'token_type'   => 'Bearer',
+            'user'         => new UserResource($user),
         ], 201);
     }
 
@@ -86,9 +100,9 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $user = Auth::user();
+        $user = Auth::user()->load('profile');
 
-        $token = $request->user()->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'user' => new UserResource($user),

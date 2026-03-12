@@ -28,7 +28,7 @@ class NewsController extends Controller
         $search = $request->query('search');
         $perPage = min($request->query('per_page', default: 15), 50);
 
-        $news = News::with('user:id,name,avatar,email')
+        $news = News::with(['user:id,name,email', 'user.profile:user_id,avatar'])
             ->where('is_published', true)
             ->search($search)
             ->latest()
@@ -54,9 +54,9 @@ class NewsController extends Controller
             new OA\Response(response: 404, description: 'Новину не знайдено'),
         ]
     )]
-    public function get_new_by_slug($slug)
+    public function show($slug)
     {
-        $news = News::with(['blocks', 'user:id,name,avatar,email'])->where(['slug' => $slug, 'is_published' => true])->first();
+        $news = News::with(['blocks', 'user:id,name,email', 'user.profile:user_id,avatar'])->where(['slug' => $slug, 'is_published' => true])->first();
 
         if (!$news) {
             return response()->json([

@@ -1,5 +1,6 @@
 @php
     use App\Enums\NewsBlockType;
+    use Illuminate\Support\Facades\Storage;
 @endphp
 
 <x-app>
@@ -21,8 +22,8 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $news->title }}</h1>
 
         <div class="flex items-center gap-4 mb-6 pb-6 border-b border-gray-200">
-            @if($news->user->avatar)
-                <img src="{{ $news->user->avatar }}" class="w-10 h-10 rounded-full object-cover">
+            @if($news->user->profile?->avatar)
+                <img src="{{ Storage::url($news->user->profile->avatar) }}" class="w-10 h-10 rounded-full object-cover">
             @else
                 <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-lg">👤</div>
             @endif
