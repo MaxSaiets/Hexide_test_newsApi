@@ -26,11 +26,10 @@ class StoreNewsBlockRequest extends FormRequest
         return [
             'type' => ['required', Rule::in(NewsBlockType::values())],
             'text_content' => 'required_unless:type,image|string|nullable',
-            'image_path' => [Rule::requiredIf(fn () => in_array($this->input('type'), [
-                NewsBlockType::Image->value,
-                NewsBlockType::TextImageLeft->value,
-                NewsBlockType::TextImageRight->value,
-            ])),'nullable','image','mimes:jpeg,png,jpg,gif','max:2048'],
+            'image_path' => [Rule::requiredIf(function(){
+               $type = NewsBlockType::tryFrom($this->input('type'));
+               return $type && $type->hasImage();
+            }),'max:2048','image','mimes:jpeg,png,jpg,gif'],
             'position' => 'integer',
         ];
     }
