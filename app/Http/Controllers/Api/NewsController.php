@@ -156,7 +156,7 @@ class NewsController extends Controller
             $news->update($data);
         });
 
-        return new NewsResource($news);
+        return new NewsResource($news->fresh());
     }
 
     #[OA\Delete(

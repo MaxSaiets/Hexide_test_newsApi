@@ -18,8 +18,10 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'bio' => $this->profile?->bio,
-            'avatar' => $this->profile?->avatar ? Storage::url($this->profile->avatar) : null,
+            'bio'    => $this->whenLoaded('profile', fn() => $this->profile?->bio),
+            'avatar' => $this->whenLoaded('profile', fn() =>
+                $this->profile?->avatar ? Storage::url($this->profile->avatar) : null
+            ),
             'email' => $this->email,
         ];
     }
