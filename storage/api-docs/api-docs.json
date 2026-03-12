@@ -5,14 +5,20 @@
         "description": "API для управління новинами з блоковою структурою контенту.",
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "/api/v1",
+            "description": "API v1"
+        }
+    ],
     "paths": {
-        "/api/register": {
+        "/register": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Реєстрація нового користувача",
-                "operationId": "8e4e3cb7b46126f4696379d3c7eeb4ad",
+                "operationId": "5d4fa5d5607ed675ba93907e1fc94534",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -69,13 +75,13 @@
                 }
             }
         },
-        "/api/login": {
+        "/login": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Авторизація користувача",
-                "operationId": "222b2625838e3c57e017987f73598fda",
+                "operationId": "67d6d0fdd54fba132e1b6f55ca254183",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -112,13 +118,13 @@
                 }
             }
         },
-        "/api/logout": {
+        "/logout": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Вихід з акаунта",
-                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
+                "operationId": "28d48c13fca984400ac8de99f54ee13a",
                 "responses": {
                     "200": {
                         "description": "Успішний вихід"
@@ -131,13 +137,85 @@
                 ]
             }
         },
-        "/api/new_blocks": {
+        "/news": {
+            "get": {
+                "tags": [
+                    "Public News"
+                ],
+                "summary": "Отримати список опублікованих новин",
+                "operationId": "a99e473d9c49fcba2c46751d22262e4d",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Пошук по назві або опису",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Кількість на сторінку (макс 50)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер сторінки",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список новин"
+                    }
+                }
+            }
+        },
+        "/news/{slug}": {
+            "get": {
+                "tags": [
+                    "Public News"
+                ],
+                "summary": "Отримати новину за slug (з блоками контенту)",
+                "operationId": "953f9af5584077615cc3239a17aca97e",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Slug новини",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Дані новини з блоками"
+                    },
+                    "404": {
+                        "description": "Новину не знайдено"
+                    }
+                }
+            }
+        },
+        "/user_news/{user_news}/blocks": {
             "post": {
                 "tags": [
                     "News Blocks"
                 ],
                 "summary": "Створити блок контенту для новини",
-                "operationId": "1f8da008a9daf20de31c96ad86afba5e",
+                "operationId": "744673d98150866a4a530b46b6e58a00",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -202,13 +280,13 @@
                 ]
             }
         },
-        "/api/new_blocks/{id}": {
+        "/blocks/{id}": {
             "post": {
                 "tags": [
                     "News Blocks"
                 ],
                 "summary": "Оновити блок контенту (POST з _method=PUT для файлів)",
-                "operationId": "b37e5416a545dbee042ff1c12f368f42",
+                "operationId": "056357b22964859762c13e699156beb7",
                 "parameters": [
                     {
                         "name": "id",
@@ -281,7 +359,7 @@
                     "News Blocks"
                 ],
                 "summary": "Видалити блок контенту",
-                "operationId": "e99f074fe414890280840f22fcc8406e",
+                "operationId": "85ecdfdb4bb1a7430f41c9c72cfc7c4b",
                 "parameters": [
                     {
                         "name": "id",
@@ -311,13 +389,13 @@
                 ]
             }
         },
-        "/api/user_news": {
+        "/user_news": {
             "get": {
                 "tags": [
                     "User News"
                 ],
                 "summary": "Отримати список власних новин",
-                "operationId": "5e28ec22584c9eeeac673cff5c8370ca",
+                "operationId": "761821e8862eabbcccff1edbebf2552f",
                 "parameters": [
                     {
                         "name": "search",
@@ -376,7 +454,7 @@
                     "User News"
                 ],
                 "summary": "Створити новину",
-                "operationId": "b1f57450a61284aa43ee78e67bc9ace7",
+                "operationId": "8fd8b02bdf1f2561026fc6c70f094902",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -431,13 +509,13 @@
                 ]
             }
         },
-        "/api/user_news/{id}": {
+        "/user_news/{id}": {
             "get": {
                 "tags": [
                     "User News"
                 ],
                 "summary": "Отримати конкретну новину користувача",
-                "operationId": "dd5bf5509734f79c531f2600f3c5edb0",
+                "operationId": "c9bf2933dff04e9a625106cfee0ba847",
                 "parameters": [
                     {
                         "name": "id",
@@ -471,7 +549,7 @@
                     "User News"
                 ],
                 "summary": "Оновити новину (POST з _method=PUT для файлів)",
-                "operationId": "f41183eca4cd12327fee0ee93f4fe46e",
+                "operationId": "f8c6940e7b09ab1c3906b31fdbb1cba7",
                 "parameters": [
                     {
                         "name": "id",
@@ -540,7 +618,7 @@
                     "User News"
                 ],
                 "summary": "Видалити новину",
-                "operationId": "f67cca6e3439ba82f15dc418185a7870",
+                "operationId": "17d3235701ab54b6e563b19f920fac64",
                 "parameters": [
                     {
                         "name": "id",
@@ -570,13 +648,13 @@
                 ]
             }
         },
-        "/api/profile": {
+        "/profile": {
             "get": {
                 "tags": [
                     "Profile"
                 ],
                 "summary": "Отримати профіль поточного користувача",
-                "operationId": "7d12955ead9260d82af59043cdf7f84d",
+                "operationId": "c6a79007a56511faa6f48397a2d15867",
                 "responses": {
                     "200": {
                         "description": "Дані профілю"
@@ -596,7 +674,7 @@
                     "Profile"
                 ],
                 "summary": "Оновити профіль (POST з _method=PUT для файлів)",
-                "operationId": "4f10e8f1a9b5877a8fe852d886240504",
+                "operationId": "42803079b1b23a321f57eae40c98b303",
                 "requestBody": {
                     "content": {
                         "multipart/form-data": {
@@ -654,78 +732,6 @@
                     }
                 ]
             }
-        },
-        "/api/news": {
-            "get": {
-                "tags": [
-                    "Public News"
-                ],
-                "summary": "Отримати список опублікованих новин",
-                "operationId": "7bfa30fa5f9f603dc64e8f019646b4d6",
-                "parameters": [
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "description": "Пошук по назві або опису",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "per_page",
-                        "in": "query",
-                        "description": "Кількість на сторінку (макс 50)",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 15
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Номер сторінки",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Список новин"
-                    }
-                }
-            }
-        },
-        "/api/news/{slug}": {
-            "get": {
-                "tags": [
-                    "Public News"
-                ],
-                "summary": "Отримати новину за slug (з блоками контенту)",
-                "operationId": "067734c2bcda43e97c3d360bc9e3cead",
-                "parameters": [
-                    {
-                        "name": "slug",
-                        "in": "path",
-                        "description": "Slug новини",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Дані новини з блоками"
-                    },
-                    "404": {
-                        "description": "Новину не знайдено"
-                    }
-                }
-            }
         }
     },
     "components": {
@@ -744,6 +750,10 @@
             "description": "Auth"
         },
         {
+            "name": "Public News",
+            "description": "Public News"
+        },
+        {
             "name": "News Blocks",
             "description": "News Blocks"
         },
@@ -754,10 +764,6 @@
         {
             "name": "Profile",
             "description": "Profile"
-        },
-        {
-            "name": "Public News",
-            "description": "Public News"
         }
     ]
 }
