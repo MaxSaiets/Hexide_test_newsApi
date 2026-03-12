@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
 class NewsController extends Controller
 {
     #[OA\Get(
-        path: '/api/news',
+        path: '/news',
         summary: 'Отримати список опублікованих новин',
         tags: ['Public News'],
         parameters: [
@@ -43,7 +43,7 @@ class NewsController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/news/{slug}',
+        path: '/news/{slug}',
         summary: 'Отримати новину за slug (з блоками контенту)',
         tags: ['Public News'],
         parameters: [

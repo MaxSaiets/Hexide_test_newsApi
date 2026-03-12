@@ -9,6 +9,10 @@ use OpenApi\Attributes as OA;
     version: "1.0.0",
     description: "API для управління новинами з блоковою структурою контенту."
 )]
+#[OA\Server(
+    url: '/api/v1',
+    description: 'API v1'
+)]
 #[OA\SecurityScheme(
     securityScheme: "bearerAuth",
     type: "http",

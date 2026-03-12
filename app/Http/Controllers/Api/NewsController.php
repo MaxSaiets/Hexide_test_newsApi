@@ -16,7 +16,7 @@ use OpenApi\Attributes as OA;
 class NewsController extends Controller
 {
     #[OA\Get(
-        path: '/api/user_news',
+        path: '/user_news',
         summary: 'Отримати список власних новин',
         tags: ['User News'],
         security: [['bearerAuth' => []]],
@@ -45,7 +45,7 @@ class NewsController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/user_news',
+        path: '/user_news',
         summary: 'Створити новину',
         tags: ['User News'],
         security: [['bearerAuth' => []]],
@@ -87,7 +87,7 @@ class NewsController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/user_news/{id}',
+        path: '/user_news/{id}',
         summary: 'Отримати конкретну новину користувача',
         tags: ['User News'],
         security: [['bearerAuth' => []]],
@@ -109,7 +109,7 @@ class NewsController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/user_news/{id}',
+        path: '/user_news/{id}',
         summary: 'Оновити новину (POST з _method=PUT для файлів)',
         tags: ['User News'],
         security: [['bearerAuth' => []]],
@@ -160,7 +160,7 @@ class NewsController extends Controller
     }
 
     #[OA\Delete(
-        path: '/api/user_news/{id}',
+        path: '/user_news/{id}',
         summary: 'Видалити новину',
         tags: ['User News'],
         security: [['bearerAuth' => []]],

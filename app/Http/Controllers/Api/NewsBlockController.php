@@ -15,7 +15,7 @@ use App\Http\Resources\NewsBlockResource;
 class NewsBlockController extends Controller
 {
     #[OA\Post(
-        path: '/api/new_blocks',
+        path: '/user_news/{user_news}/blocks',
         summary: 'Створити блок контенту для новини',
         tags: ['News Blocks'],
         security: [['bearerAuth' => []]],
@@ -58,7 +58,7 @@ class NewsBlockController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/new_blocks/{id}',
+        path: '/blocks/{id}',
         summary: 'Оновити блок контенту (POST з _method=PUT для файлів)',
         tags: ['News Blocks'],
         security: [['bearerAuth' => []]],
@@ -107,7 +107,7 @@ class NewsBlockController extends Controller
     }
 
     #[OA\Delete(
-        path: '/api/new_blocks/{id}',
+        path: '/blocks/{id}',
         summary: 'Видалити блок контенту',
         tags: ['News Blocks'],
         security: [['bearerAuth' => []]],

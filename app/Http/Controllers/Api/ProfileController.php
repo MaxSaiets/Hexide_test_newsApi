@@ -13,7 +13,7 @@ use App\Http\Requests\UpdateProfileRequest;
 class ProfileController extends Controller
 {
     #[OA\Get(
-        path: '/api/profile',
+        path: '/profile',
         summary: 'Отримати профіль поточного користувача',
         tags: ['Profile'],
         security: [['bearerAuth' => []]],
@@ -28,7 +28,7 @@ class ProfileController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/profile',
+        path: '/profile',
         summary: 'Оновити профіль (POST з _method=PUT для файлів)',
         tags: ['Profile'],
         security: [['bearerAuth' => []]],

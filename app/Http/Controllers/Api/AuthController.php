@@ -15,7 +15,7 @@ use App\Http\Requests\LoginRequest;
 class AuthController extends Controller
 {
     #[OA\Post(
-        path: '/api/register',
+        path: '/register',
         summary: 'Реєстрація нового користувача',
         tags: ['Auth'],
         requestBody: new OA\RequestBody(
@@ -58,7 +58,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/login',
+        path: '/login',
         summary: 'Авторизація користувача',
         tags: ['Auth'],
         requestBody: new OA\RequestBody(
@@ -98,7 +98,7 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/logout',
+        path: '/logout',
         summary: 'Вихід з акаунта',
         tags: ['Auth'],
         security: [['bearerAuth' => []]],
